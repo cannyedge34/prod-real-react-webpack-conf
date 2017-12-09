@@ -6,6 +6,8 @@ import webpackDevMidleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpackHotServerMiddleware from 'webpack-hot-server-middleware';
 
+import api from './api';
+
 import webpackConfig from '../../webpack.config';
 
 const app = express();
@@ -13,6 +15,8 @@ const compiler = webpack(webpackConfig);
 const port = process.env.NODE_PORT || 3000;
 
 app.use(express.static(path.join(__dirname, '../../public')));
+
+app.use('/api', api);
 
 app.use(webpackDevMidleware(compiler));
 app.use(
