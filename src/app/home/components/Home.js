@@ -6,7 +6,7 @@ class Home extends Component {
     return (
       <div className="container">
         <h1>Welcome</h1>
-        Home - <Link to="/about">About</Link>
+        Home - <Link to="/about">About</Link> - <Link to="/blog">Blog</Link>
       </div>
     );
   }

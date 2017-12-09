@@ -2,6 +2,11 @@ import 'babel-polyfill';
 import React from 'react';
 import { hydrate } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
+import { Provider } from 'react-redux';
+
+import configureStore from '../shared/configureStore';
+
+const store = configureStore(window.initialState);
 
 import App from './App';
 
@@ -9,9 +14,11 @@ const rootElement = document.getElementById('root');
 
 const renderApp = Component => {
   hydrate(
-    <AppContainer>
-      <Component />
-    </AppContainer>,
+    <Provider store={store}>
+      <AppContainer>
+        <Component />
+      </AppContainer>
+    </Provider>,
     rootElement
   );
 };
