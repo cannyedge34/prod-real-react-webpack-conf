@@ -1,5 +1,11 @@
 export default function html(options) {
-  const { app = 'main', title = 'example', markup } = options;
+  const {
+    app = 'main',
+    title = 'example',
+    markup,
+    initialState,
+    serialize
+  } = options;
 
   return `
     <!DOCTYPE html>
@@ -14,6 +20,9 @@ export default function html(options) {
       </head>
       <body>
         <div id="root">${markup}</div>
+        <script>
+          window.initialState = ${serialize(initialState)};
+        </script>
         <script src="/app/${app}.bundle.js"></script>
       </body>
     </html>
