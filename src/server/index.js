@@ -6,9 +6,11 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpackHotServerMiddleware from 'webpack-hot-server-middleware';
 
-import { isMobile } from '../shared/utils/device';
+import { isBot, isMobile } from '../shared/utils/device';
 
 import webpackConfig from '../../webpack.config';
+
+import clientRender from './clientRender';
 
 import api from './api';
 
@@ -34,6 +36,7 @@ app.use(express.static(path.join(__dirname, '../../public')));
 app.use('/api', api);
 
 app.use((req, res, next) => {
+  req.isBot = isBot(req.headers['user-agent']);
   req.isMobile = isMobile(req.headers['user-agent']);
 
   return next();
@@ -46,8 +49,11 @@ if (isDevelopment) {
       compiler.compilers.find(compiler => compiler.name === 'client')
     )
   );
-  app.use(webpackHotServerMiddleware(compiler));
-} else {
+}
+
+app.use(clientRender());
+
+if (!isDevelopment) {
   try {
     const serverRender = require('../../dist/server.js').default;
 
@@ -56,6 +62,8 @@ if (isDevelopment) {
     throw e;
   }
 }
+
+app.use(webpackHotServerMiddleware(compiler));
 
 app.listen(port, err => {
   if (!err && !isAnalyzer) {
