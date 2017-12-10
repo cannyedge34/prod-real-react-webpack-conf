@@ -23,6 +23,7 @@ export default function html(options) {
         <script>
           window.initialState = ${serialize(initialState)};
         </script>
+        <script src="/app/vendor.bundle.js"></script>
         <script src="/app/${app}.bundle.js"></script>
       </body>
     </html>
